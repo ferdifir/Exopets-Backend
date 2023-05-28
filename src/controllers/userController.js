@@ -59,7 +59,7 @@ exports.loginUser = async (req, res) => {
       data: result[0],
     });
   });
-}
+};
 
 exports.editUser = async (req, res) => {
   const { uid, name, email, phone, lat, lon, profile_picture } = req.body;
@@ -97,4 +97,69 @@ exports.editUser = async (req, res) => {
       });
     }
   );
-}
+};
+
+exports.getAdmin = async (req, res) => {
+  userModel.getAdmin((err, result) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err,
+        data: null,
+      });
+    }
+    let data = result[0];
+    res.status(200).json({
+      success: true,
+      message: "Admin retrieved successfully",
+      data: {
+        id: data.id,
+        uid: data.uid,
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        profile_picture: data.profile_picture,
+      },
+    });
+  });
+};
+
+exports.addReport = async (req, res) => {
+  const { user_id, report } = req.body;
+  userModel.addReport(user_id, report, (err, result) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err,
+        data: null,
+      });
+    }
+
+    res.status(201).json({
+      success: true,
+      message: "Report added successfully",
+      data: {
+        user_id: user_id,
+        report: report,
+      },
+    });
+  });
+};
+
+exports.getReport = async (req, res) => {
+  userModel.getReport((err, result) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err,
+        data: null,
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Report retrieved successfully",
+      data: result,
+    });
+  });
+};

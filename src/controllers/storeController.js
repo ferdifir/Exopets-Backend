@@ -48,3 +48,33 @@ exports.getStoreByUid = async (req, res) => {
     });
   });
 };
+
+exports.updateStore = async (req, res) => {
+  const { uid, store_name, address, description } = req.body;
+  storeModel.editStore(
+    uid,
+    store_name,
+    address,
+    description,
+    (err, result) => {
+      if (err) {
+        return res.status(400).json({
+          success: false,
+          message: err,
+          data: null,
+        });
+      }
+
+      res.status(200).json({
+        success: true,
+        message: "Store updated successfully",
+        data: {
+          uid: uid,
+          store_name: store_name,
+          address: address,
+          description: description,
+        },
+      });
+    }
+  );
+};
