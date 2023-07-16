@@ -40,6 +40,45 @@ exports.getAllProducts = async (req, res) => {
   });
 };
 
+exports.getMyProducts = async (req, res) => {
+  const { uid, sid } = req.params;
+
+  userModel.isUidExist(uid, (err, result) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err,
+        data: null,
+      });
+    }
+
+    let isUserExist = result.length > 0;
+    if (!isUserExist) {
+      return res.status(400).json({
+        success: false,
+        message: "User not found",
+        data: null,
+      });
+    } else {
+      productModel.getMyProducts(sid, (err, result) => {
+        if (err) {
+          return res.status(400).json({
+            success: false,
+            message: err,
+            data: null,
+          });
+        }
+
+        res.status(200).json({
+          success: true,
+          message: "Products retrieved successfully",
+          data: result,
+        });
+      });
+    }
+  });
+};
+
 exports.getProductById = async (req, res) => {
   const uid = req.params.uid;
   const pid = req.params.pid;

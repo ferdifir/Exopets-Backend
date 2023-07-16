@@ -43,17 +43,21 @@ exports.isAdmin = (req, res) => {
 
     let isAdmin = result.length > 0;
     if (!isAdmin) {
-      return res.status(400).json({
-        success: false,
+      return res.status(200).json({
+        success: true,
         message: "User is not admin",
-        data: null,
+        data: {
+          isAdmin: false,
+        },
       });
     }
 
     res.status(200).json({
       success: true,
       message: "User is admin",
-      data: null,
+      data: {
+        isAdmin: true,
+      },
     });
   });
 };

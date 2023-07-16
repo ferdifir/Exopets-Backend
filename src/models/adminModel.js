@@ -78,7 +78,8 @@ exports.deleteUser = (uid, callback) => {
 };
 
 exports.getTransactions = (callback) => {
-  const query = "SELECT * FROM transactions JOIN users ON transactions.user_id = users.uid JOIN products ON transactions.product_id = products.pid";
+  //const query = "SELECT * FROM transactions JOIN users ON transactions.user_id = users.uid JOIN products ON transactions.product_id = products.pid WHERE transactions.status = 'Awaiting Payment'";
+  const query = "SELECT * FROM payment JOIN transactions ON payment.transaction_id = transactions.transaction_id JOIN users ON transactions.user_id = users.uid JOIN products ON transactions.product_id = products.pid";
   db.query(query, (err, result) => {
     if (err) {
       return callback(err);
